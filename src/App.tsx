@@ -1,25 +1,30 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 
-function App() {
+import jsonServerProvider from 'ra-data-json-server';
+import React from 'react';
+import { Admin, ListGuesser, Resource } from 'react-admin';
+
+import { createTheme } from '@material-ui/core/styles';
+
+// import Dashboard from './dashboard';
+const theme = createTheme({
+  palette: {
+    type: 'dark',
+  },
+});
+
+// データを取得するクライアントとエンドポイントのベースURLの初期化
+const dataProvider = jsonServerProvider('http://localhost:4000');
+
+// Resourceタグによってページが作成される。
+// nameプロパティがベースURLの後に続く、取得したいデータのエンドポイントになる。
+// この場合は 'http://localhost:4000/api/users' がセットされる
+// listプロパティを付与することで取得したデータを形式で表示する
+const App: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Admin theme={theme} dataProvider={dataProvider} >
+      <Resource name="users" list={ListGuesser} />
+    </Admin>
   );
 }
 
